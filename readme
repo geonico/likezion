@@ -1,2 +1,56 @@
 update digital ocean website form github.
 
+usermod -aG sudo bigadmin
+cp -r .ssh /home/bigadmin
+chown -R bigadmin:bigadmin /home/bigadmin/.ssh
+
+wget -0 caddy.tgz https://caddyserver.com/download/linux/amd64?plugins=http.git&license=&telemetry=off
+tar vxf caddy.tgz
+
+next copy the caddy binary 
+sudo cp caddy /usr/local/bin
+
+update the permissions
+sudo chown root:root /usr/local/bin/caddy
+sudo chmod 755 /usr/local/bin/caddy
+
+Give http and https port access to root.
+sudo setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy 
+
+now create a directory to hold caddy
+sudo mkdir /etc/caddy
+change ownership 
+sudo chown -R root: /etc/caddy 
+Create directory to hold certs 
+sudo mkdir /etc/ssl/caddy
+
+Give premission to root
+sudo chown -R root:www-data /etc/ssl/caddy 
+
+Update premissions 
+sudo chmod 0770 /etc/ssl/caddy 
+
+
+
+Lastly install caddy service, change to /caddy/init
+sudo cp init/linux-systemd/caddy.service /etc/systemd/system
+
+
+change permissions
+sudo chown root:root /etc/systemd/system/caddy.service
+sudo chmod 644 /etc/systemd/system/caddy.service
+sudo systemctl daemon-reload
+
+Enable cadddy so it starts on boot
+sudo systemctl enable caddy
+
+configure caddy
+sudo vi /etc/caddy/Caddyfile
+
+likezion.com {
+     tls geonick@secudyne.com
+	 root /var/www
+}
+
+
+sudo systemcts start cadd
