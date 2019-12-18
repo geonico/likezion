@@ -53,4 +53,4 @@ likezion.com {
 }
 
 
-sudo systemcts start cadd
+sudo systemcts start caddy server
